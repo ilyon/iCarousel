@@ -380,7 +380,7 @@ NSComparisonResult compareViewDepth(UIView *view1, UIView *view2, iCarousel *sel
 {
     for (UIView *view in [[[_itemViews allValues] sortedArrayUsingFunction:(NSInteger (*)(id, id, void *))compareViewDepth context:(__bridge void *)self] reverseObjectEnumerator])
     {
-        if ([view.superview.layer hitTest:point])
+        if (CGRectContainsPoint(view.superview.frame, point))
         {
             return view;
         }
