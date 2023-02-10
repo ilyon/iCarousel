@@ -79,6 +79,8 @@
 - (void)carouselWillBeginScrollingAnimation:(__unused iCarousel *)carousel {}
 - (void)carouselDidEndScrollingAnimation:(__unused iCarousel *)carousel {}
 - (void)carouselDidScroll:(__unused iCarousel *)carousel {}
+- (void)carouselDidScroll:(__unused iCarousel *)carousel offset:(CGFloat)offset {}
+- (void)carouselDidScroll:(__unused iCarousel *)carousel distance:(CGFloat)distance {}
 
 - (void)carouselCurrentItemIndexDidChange:(__unused iCarousel *)carousel {}
 - (void)carouselWillBeginDragging:(__unused iCarousel *)carousel {}
@@ -825,7 +827,7 @@ NSComparisonResult compareViewDepth(UIView *view1, UIView *view2, iCarousel *sel
                                         self.bounds.size.height/2.0 + _contentOffset.height);
     
     //enable/disable interaction
-    view.superview.userInteractionEnabled = (!_centerItemWhenSelected || index == self.currentItemIndex);
+    view.superview.userInteractionEnabled = YES;//(!_centerItemWhenSelected || index == self.currentItemIndex);
   
     //account for retina
     view.superview.layer.rasterizationScale = [UIScreen mainScreen].scale;
@@ -1782,6 +1784,7 @@ NSComparisonResult compareViewDepth(UIView *view1, UIView *view2, iCarousel *sel
         CGFloat distance = _startVelocity * time + 0.5 * acceleration * pow(time, 2.0);
         _scrollOffset = _startOffset + distance;
         [self didScroll];
+        [_delegate carouselDidScroll:self distance:fabs(time - _scrollDuration)];
         if (fabs(time - _scrollDuration) < FLOAT_ERROR_MARGIN)
         {
             _decelerating = NO;
@@ -1921,6 +1924,10 @@ NSComparisonResult compareViewDepth(UIView *view1, UIView *view2, iCarousel *sel
         [self popAnimationState];
     }
 
+    if (_dragging || _decelerating) {
+        [_delegate carouselDidScroll:self offset:fabs(_scrollOffset - _previousScrollOffset)];
+    }
+    
     //update previous index
     _previousScrollOffset = _scrollOffset;
     _previousItemIndex = self.currentItemIndex;

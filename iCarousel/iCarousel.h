@@ -154,6 +154,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (CGFloat)offsetForItemAtIndex:(NSInteger)index;
 - (nullable UIView *)itemViewAtPoint:(CGPoint)point;
 
+- (void)transformItemView:(UIView *)view atIndex:(NSInteger)index;
+
 - (void)removeItemAtIndex:(NSInteger)index animated:(BOOL)animated;
 - (void)insertItemAtIndex:(NSInteger)index animated:(BOOL)animated;
 - (void)reloadItemAtIndex:(NSInteger)index animated:(BOOL)animated;
@@ -182,6 +184,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)carouselWillBeginScrollingAnimation:(iCarousel *)carousel;
 - (void)carouselDidEndScrollingAnimation:(iCarousel *)carousel;
 - (void)carouselDidScroll:(iCarousel *)carousel;
+- (void)carouselDidScroll:(iCarousel *)carousel offset:(CGFloat)offset;
+- (void)carouselDidScroll:(iCarousel *)carousel distance:(CGFloat)distance;
 - (void)carouselCurrentItemIndexDidChange:(iCarousel *)carousel;
 - (void)carouselWillBeginDragging:(iCarousel *)carousel;
 - (void)carouselDidEndDragging:(iCarousel *)carousel willDecelerate:(BOOL)decelerate;
